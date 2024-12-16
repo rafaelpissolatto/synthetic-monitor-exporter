@@ -1,0 +1,40 @@
+server:
+  port: 8080
+  log_level: "debug"
+
+http:
+  http_auth_configs:
+    - name: "Default Auth"
+      method: "POST"
+      url: "https://auth.example.com/token"
+      token_key: "access_token"
+      token_type: "Bearer"
+      refresh_interval: 15m
+  http_endpoints:
+    - name: "Public API"
+      type: "http"
+      method: "GET"
+      url: "https://api.example.com/public"
+      timeout: 5s
+    - name: "Protected API"
+      type: "http"
+      method: "POST"
+      url: "https://api.example.com/protected"
+      auth: "Default Auth"
+      payload_file: "payloads/request_body.json"
+      timeout: 10s
+
+icmp:
+  imcp_endpoints:
+    - name: "Ping Google"
+      type: "icmp"
+      url: "google.com"
+      timeout: 2s
+
+grpc:
+  grpc_endpoints:
+    - name: "gRPC Health Check"
+      type: "grpc"
+      url: "grpc.example.com:50051"
+      method: "HealthCheck"
+      timeout: 5s
